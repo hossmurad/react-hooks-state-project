@@ -3,18 +3,56 @@ import {useState} from "react";
 
 const App = () => {
 
-const [myObject , setMyObject] = useState({
-    name:"Md. Murad Hossain",
-    age: 23,
-    city:"Beijin",
-    home: "Dhaka"
-});
+    const [todo, setTodo] = useState([])
+
+
+
+   const onSubmit = (event)=>{
+        event.preventDefault()
+       let formData = new FormData(event.target);
+        let item = formData.get('item')
+       todo.push(item)
+       setTodo([...todo])
+       event.target.reset()
+
+
+    }
+
+    const remove = (index)=>{
+        todo.splice(index,1)
+        setTodo([...todo])
+    }
+
+
+
     return (
         <div>
-            <h1>Name : {myObject.name}</h1>
-            <h1>age : {myObject.age}</h1>
-            <h1>city : {myObject.city}</h1>
-            <h1>home : {myObject.home}</h1>
+           <div>
+               <form onSubmit={onSubmit}>
+                   <input type='text' name="item" required ={true}/>
+                   <input type="submit" value="add to do" />
+               </form>
+
+           </div>
+            <br/>
+            <h3>List of the to do </h3>
+
+            <table>
+                <tbody>
+                {
+                    todo.map((item,index)=>(
+                        <tr key={index}>
+                            <td>{index+1}</td>
+                            <td>{item}</td>
+                            <button onClick={()=>{remove(index)}}>Remove</button>
+
+                        </tr>
+                    ))
+                }
+                </tbody>
+            </table>
+
+
 
         </div>
     );
